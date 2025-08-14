@@ -60,7 +60,7 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is None:
             return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
 
-        user_input.setdefault("subdomain", "ecloud")
+        subdomain = user_input["subdomain"]
         email = user_input["email"].strip()
         password = user_input["password"]
         
@@ -70,7 +70,7 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         try:
             # Login with email/password
-            login_data = await self.akuvox_api_client.async_login_password(email, password)
+            login_data = await self.akuvox_api_client.async_login_password(email, password, subdomain)
             if not login_data or "token" not in login_data:
                 errors["base"] = "auth_failed"
                 return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
