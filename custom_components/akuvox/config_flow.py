@@ -59,7 +59,7 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is None:
             return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
 
-        subdomain = "ecloud"
+        user_input.setdefault("subdomain", "ecloud")
         email = user_input["email"].strip()
         password = user_input["password"]
         
@@ -84,6 +84,7 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             # Prepare entry data
             self.data = {
                 "email": email,
+                "subdomain": subdomain,
                 "token": login_data.get("token"),
                 "refresh_token": login_data.get("refresh_token"),
                 "token_valid": login_data.get("token_valid"),
@@ -118,6 +119,7 @@ class AkuvoxOptionsFlowHandler(config_entries.OptionsFlow):
         schema = vol.Schema({
             vol.Required("email", default=current_email): str,
             vol.Required("password"): str,
+            vol.Optional("subdomain", default="ecloud"): str,
         })
 
         if user_input is None:
