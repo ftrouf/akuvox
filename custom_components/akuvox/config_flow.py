@@ -6,7 +6,15 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import DOMAIN, LOGGER
+from .const import (
+    DOMAIN,
+    DEFAULT_TOKEN,
+    DEFAULT_APP_TOKEN,
+    LOGGER,
+    LOCATIONS_DICT,
+    COUNTRY_PHONE,
+    SUBDOMAINS_LIST,
+)
 from .api import AkuvoxApiClient
 from .coordinator import AkuvoxDataUpdateCoordinator
 
@@ -51,9 +59,10 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is None:
             return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
 
+        subdomain = "ecloud"
         email = user_input["email"].strip()
         password = user_input["password"]
-
+        
         if not email or not password:
             errors["base"] = "missing_credentials"
             return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
