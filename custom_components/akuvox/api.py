@@ -111,7 +111,7 @@ class AkuvoxApiClient:
     # =========================
     # Public entrypoints (password flow)
     # =========================
-    async def async_login_password(self, email: str, password: str) -> dict:
+    async def async_login_password(self, email: str, password: str, subdomain: str) -> dict:
         """Login via email/password.
 
         Fait: GET https://<REST_SERVER_ADDR>:<PORT>/login?user=<email_cesar+3>&passwd=<md5(md5(password))>
