@@ -54,6 +54,7 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         schema = vol.Schema({
             vol.Required("email"): str,
             vol.Required("password"): str,
+            vol.Optional("subdomain", default="ecloud"): str,
         })
 
         if user_input is None:
@@ -119,7 +120,6 @@ class AkuvoxOptionsFlowHandler(config_entries.OptionsFlow):
         schema = vol.Schema({
             vol.Required("email", default=current_email): str,
             vol.Required("password"): str,
-            vol.Optional("subdomain", default="ecloud"): str,
         })
 
         if user_input is None:
