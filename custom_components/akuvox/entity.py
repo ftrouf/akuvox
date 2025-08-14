@@ -28,10 +28,7 @@ class AkuvoxEntity(Entity):
             hass=self.hass,
             host=host,
             subdomain=None,
-            auth_token=auth_token,
-            token=token,
-            phone_number=phone_number,
-            country_code=country_code)
+            token=token)
 
     def get_saved_value(self, key: str) -> str:
         """Get the value for a given key. Options flow 1st, Config flow 2nd."""
