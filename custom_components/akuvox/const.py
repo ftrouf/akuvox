@@ -136,6 +136,12 @@ LOCATIONS_DICT = {
         "flag": "🇫🇯",
         "subdomain": "scloud"
     },
+    "FR": {
+        "country": "France",
+        "phone_number": "33",
+        "flag": "🇫🇯",
+        "subdomain": "ecloud"
+    },    
     "GB": {
         "country": "United Kingdom",
         "phone_number": "44",
@@ -397,6 +403,7 @@ COUNTRY_PHONE: dict = {
     "BE": "32",
     "CZ": "420",
     "EE": "372",
+    "FR": "33",
     "GE": "995",
     "DE": "49",
     "IR": "98",
