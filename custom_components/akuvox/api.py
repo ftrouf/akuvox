@@ -123,7 +123,7 @@ class AkuvoxApiClient:
 
         user_obf = _caesar_plus3(email.strip())
         passwd_hash = _double_md5(password)
-        url = f"https://gate.ecloud.akuvox.com:{REST_SERVER_PORT}/login?user={user_obf}&passwd={passwd_hash}"
+        url = f"https://{REST_SERVER_ADDR}:{REST_SERVER_PORT}/login?user={user_obf}&passwd={passwd_hash}"
         headers = {
             "user-agent": "VBell/7.15.3 (iPhone; iOS 18.5; Scale/3.00)",
             "api-version": "7.11",
