@@ -69,20 +69,30 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
 
         try:
-            # Login with email/password
+             # 1) Login email/mot de passe
             login_data = await self.akuvox_api_client.async_login_password(email, password, subdomain)
             if not login_data or "token" not in login_data:
                 errors["base"] = "auth_failed"
                 return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
 
-            # Optionally get servers_list before retrieving user data
-            await self.akuvox_api_client.async_get_servers_list()
+            # 2) Injecte le subdomain et token dans le modèle avant init
+            self.akuvox_api_client.init_api_with_data(
+                hass=self.hass,
+                subdomain=subdomain,
+                token=login_data.get("token"),
+            )
 
-            # Retrieve user/device data
+            # 3) Récupère servers_list (ancienne méthode remplacée)
+            #    -> soit directement:
+            await self.akuvox_api_client.async_get_servers_list()
+            #    -> ou via: await self.akuvox_api_client.async_init_api()
+            #       (qui appelle async_get_servers_list + démarre le polling)
+
+            # 4) Récupère les infos / devices
             await self.akuvox_api_client.async_retrieve_user_data()
             devices_json = self.akuvox_api_client.get_devices_json() or {}
 
-            # Prepare entry data
+            # 5) Enregistre les données dans la config entry
             self.data = {
                 "email": email,
                 "subdomain": subdomain,
@@ -92,7 +102,6 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 **devices_json,
             }
 
-            # Ensure unique ID by email
             await self.async_set_unique_id(email.lower())
             self._abort_if_unique_id_configured()
 
@@ -100,7 +109,7 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 title=f"Akuvox ({email})",
                 data=self.data,
             )
-
+            
         except Exception as exc:  # noqa: BLE001
             LOGGER.exception("Login failed: %s", exc)
             errors["base"] = "auth_failed"
