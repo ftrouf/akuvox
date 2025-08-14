@@ -76,7 +76,7 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
 
             # Optionally get servers_list before retrieving user data
-            await self.akuvox_api_client.async_make_servers_list_request()
+            await self.akuvox_api_client.async_get_servers_list()
 
             # Retrieve user/device data
             await self.akuvox_api_client.async_retrieve_user_data()
