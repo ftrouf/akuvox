@@ -84,7 +84,8 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
             # 3) Récupère servers_list (ancienne méthode remplacée)
             #    -> soit directement:
-            await self.akuvox_api_client.async_get_servers_list()
+            #await self.akuvox_api_client.async_get_servers_list()
+            await self.akuvox_api_client.async_init_api()
             #    -> ou via: await self.akuvox_api_client.async_init_api()
             #       (qui appelle async_get_servers_list + démarre le polling)
 
