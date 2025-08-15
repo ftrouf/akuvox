@@ -71,7 +71,7 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         try:
              # 1) Login email/mot de passe
             LOGGER.debug("ETAPE1")
-            login_data = await self.akuvox_api_client.async_login_password(hass=self.hass,email, password, subdomain)
+            login_data = await self.akuvox_api_client.async_login_password(hass=self.hass, email, password, subdomain)
             if not login_data or "token" not in login_data:
                 errors["base"] = "auth_failed"
                 return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
