@@ -56,7 +56,8 @@ class AkuvoxData:
         self.token = token if token else self.get_value_for_key(entry, "token", self.token) # type: ignore
         self.phone_number = phone_number if phone_number else self.get_value_for_key(entry, "phone_number", self.phone_number) # type: ignore
         self.wait_for_image_url = wait_for_image_url if wait_for_image_url is not None else bool(self.get_value_for_key(entry, "event_screenshot_options", False) == "wait") # type: ignore
-
+        self.rtsp_ip = rtsp_ip if rtsp_ip else self.get_value_for_key(entry, "rtsp_ip", self.rtsp_ip)
+        LOGGER.debug(" init rtmp_server - %s", self.rtsp_ip)
         self.subdomain = subdomain if subdomain else self.get_value_for_key(entry, "subdomain", self.subdomain) # type: ignore
         if subdomain is None:
             if not country_code:
