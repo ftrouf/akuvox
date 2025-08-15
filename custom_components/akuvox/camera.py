@@ -10,6 +10,43 @@ from homeassistant.components.generic.camera import GenericCamera
 
 from .const import DOMAIN, LOGGER, NAME, VERSION, DATA_STORAGE_KEY
 
+def _force_udp(url: str) -> str:
+    """
+    Force le transport RTSP en UDP en ajoutant :
+      - ?udp (ou &udp) pour go2rtc
+      - #rtsp_transport=udp pour le chemin ffmpeg de go2rtc
+    N’ajoute rien si 'udp' ou 'tcp' est déjà présent dans la query/fragment.
+    """
+    try:
+        p = urlparse(url)
+    except Exception:
+        # si l’URL est invalide, on renvoie tel quel
+        return url
+
+    # seulement pour RTSP
+    if p.scheme.lower() != "rtsp":
+        return url
+
+    q = p.query or ""
+    f = p.fragment or ""
+
+    # si déjà un indicateur udp/tcp, on ne touche pas
+    if ("udp" in q) or ("tcp" in q) or ("rtsp_transport=udp" in f) or ("rtsp_transport=tcp" in f):
+        return url
+
+    # ajoute ?udp / &udp
+    if q:
+        q = q + "&udp"
+    else:
+        q = "udp"
+
+    # ajoute aussi le fragment ffmpeg
+    if f:
+        f = f + "&rtsp_transport=udp"
+    else:
+        f = "rtsp_transport=udp"
+
+    return urlunparse((p.scheme, p.netloc, p.path, p.params, q, f))
 
 async def async_setup_entry(hass: HomeAssistant,
                             _entry,
@@ -31,10 +68,16 @@ async def async_setup_entry(hass: HomeAssistant,
     for camera_data in cameras_data:
         name = str(camera_data["name"]).strip()
         rtsp_url = str(camera_data["video_url"]).strip()
+        # Force UDP pour fiabiliser go2rtc (et compat ffmpeg)
+        rtsp_url_udp = _force_udp(rtsp_url)
+        if rtsp_url_udp != rtsp_url:
+            LOGGER.debug("RTSP URL (forced UDP) for '%s': %s (was: %s)", name, rtsp_url_udp, rtsp_url)
+        else:
+            LOGGER.debug("RTSP URL for '%s': %s", name, rtsp_url_udp)      
         entities.append(AkuvoxCameraEntity(
             hass=hass,
             name=name,
-            rtsp_url=rtsp_url
+            rtsp_url=rtsp_url_udp
         ))
 
     if async_add_devices is None:
