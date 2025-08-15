@@ -71,9 +71,9 @@ async def async_setup_entry(hass: HomeAssistant,
         # Force UDP pour fiabiliser go2rtc (et compat ffmpeg)
         rtsp_url_udp = _force_udp(rtsp_url)
         if rtsp_url_udp != rtsp_url:
-            LOGGER.debug("RTSP URL (forced UDP) for '%s': %s (was: %s)", name, rtsp_url_udp, rtsp_url)
+            LOGGER.error("RTSP URL (forced UDP) for '%s': %s (was: %s)", name, rtsp_url_udp, rtsp_url)
         else:
-            LOGGER.debug("RTSP URL for '%s': %s", name, rtsp_url_udp)      
+            LOGGER.error("RTSP URL for '%s': %s", name, rtsp_url_udp)      
         entities.append(AkuvoxCameraEntity(
             hass=hass,
             name=name,
