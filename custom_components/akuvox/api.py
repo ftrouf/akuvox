@@ -95,6 +95,7 @@ class AkuvoxApiClient:
         host=None,
         subdomain=None,
         token=None,
+        rtsp_ip=None
     ):
         """"Initialize values from saved data/options (password mode)."""
         if not self._data:
@@ -105,6 +106,7 @@ class AkuvoxApiClient:
                 host=host,  # type: ignore
                 subdomain=subdomain,  # type: ignore
                 token=token,  # type: ignore
+                rtsp_ip=rtsp_ip
             )
         self.hass = self.hass if self.hass else hass
 
