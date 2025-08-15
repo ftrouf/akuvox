@@ -122,6 +122,7 @@ class AkuvoxData:
                             "name": name,
                             "video_url": f"rtsp://ak:{password}@{self.rtsp_ip}:554/{mac}"
                         }
+                         LOGGER.debug(" video_url - %s", self.rtsp_ip)
                         self.camera_data.append(camera_dict)
 
                     # Door Relay
