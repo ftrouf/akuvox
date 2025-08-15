@@ -104,6 +104,7 @@ class AkuvoxData:
                 self.token = json_data["token"]
             if "rtmp_server" in json_data:
                 self.rtsp_ip = json_data["rtmp_server"].split(':')[0]
+                LOGGER.debug(" rtmp_server - %s", self.rtsp_ip)
 
     def parse_userconf_data(self, json_data: dict):
         """Parse the userconf API response."""
