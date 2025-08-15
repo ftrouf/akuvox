@@ -92,18 +92,13 @@ class AkuvoxData:
         """Parse the rest_server API response."""
         if json_data is not None and json_data != {}:
             self.host = json_data["rest_server_https"]
-            self.rtsp_ip = json_data["rtmp_server"].split(':')[0]
-            LOGGER.debug(" rtmp_server - %s", self.rtsp_ip)
             return True
         return self.host is None or len(self.host) == 0
 
     def parse_sms_login_response(self, json_data: dict):
         """Parse the sms_login API response."""
+        LOGGER.debug(" parse_sms_login')
         if json_data is not None:
-            if "auth_token" in json_data:
-                self.auth_token = json_data["auth_token"]
-            if "token" in json_data:
-                self.token = json_data["token"]
             if "rtmp_server" in json_data:
                 self.rtsp_ip = json_data["rtmp_server"].split(':')[0]
                 LOGGER.debug(" rtmp_server - %s", self.rtsp_ip)
