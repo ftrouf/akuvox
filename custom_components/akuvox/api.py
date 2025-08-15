@@ -228,7 +228,7 @@ class AkuvoxApiClient:
             self._data.host = "...request in process"
             if await self.async_fetch_rest_server() is False:
                 return False
-
+        LOGGER.debug("INIT_API")
         # Récupère la liste des serveurs (nécessaire avant user_conf)
         try:
             await self.async_get_servers_list()
