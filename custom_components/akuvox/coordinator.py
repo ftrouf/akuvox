@@ -47,12 +47,13 @@ class AkuvoxDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self):
         """Update data via library."""
         try:
-            if await self.client.async_retrieve_user_data():
-                data: dict = self.client.get_devices_json()
-                if data is not None:
-                    LOGGER.debug("Saving user's data to local storage")
-                    store = storage.Store(self.hass, 1, DATA_STORAGE_KEY)
-                    await store.async_save(data)
+            LOGGER.debug("COORDINATOR")
+            #if await self.client.async_retrieve_user_data():
+            #    data: dict = self.client.get_devices_json()
+            #    if data is not None:
+            #        LOGGER.debug("Saving user's data to local storage")
+            #        store = storage.Store(self.hass, 1, DATA_STORAGE_KEY)
+            #        await store.async_save(data)
 
         except AkuvoxApiClientAuthenticationError as exception:
             raise ConfigEntryAuthFailed(exception) from exception
