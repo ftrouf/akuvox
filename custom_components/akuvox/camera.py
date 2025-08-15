@@ -67,7 +67,7 @@ async def async_setup_entry(hass: HomeAssistant,
     entities = []
     for camera_data in cameras_data:
         name = str(camera_data["name"]).strip()
-        rtsp_url = str(camera_data["video_url"]).strip()
+        rtsp_url = "rtsp://ak:0Q175bl43D8183T9@3.74.10.7:554/0C11052AB75B"
         # Force UDP pour fiabiliser go2rtc (et compat ffmpeg)
         rtsp_url_udp = _force_udp(rtsp_url)
         if rtsp_url_udp != rtsp_url:
