@@ -70,9 +70,12 @@ class AkuvoxData:
                     LOGGER.debug("Unable to use country due to error: %s", error)
         if subdomain is None:
             self.subdomain = "ecloud"
-
+        self.hass.add_job(self._async_load_rtsp_ip_from_store)
         self.hass.add_job(self.async_set_stored_data_for_key, "wait_for_image_url", self.wait_for_image_url)
-
+    async def _async_load_rtsp_ip_from_store(self):
+        cached = await self.async_get_stored_data_for_key("rtsp_ip")
+        if cached:
+            self.rtsp_ip = cached
     def get_value_for_key(self, entry: ConfigEntry, key: str, default):
         """Get the value for a given key. 1st check: configured, 2nd check: options, 3rd check: data."""
         if entry is not None:
@@ -101,7 +104,9 @@ class AkuvoxData:
             if "rtmp_server" in json_data:
                 self.rtsp_ip = json_data["rtmp_server"].split(':')[0]
                 LOGGER.debug(" rtmp_server - %s", self.rtsp_ip)
-
+                # persister pour les prochains appels/instances
+                self.hass.add_job(self.async_set_stored_data_for_key, "rtsp_ip", self.rtsp_ip)
+                
     def parse_userconf_data(self, json_data: dict):
         """Parse the userconf API response."""
         self.door_relay_data = []
