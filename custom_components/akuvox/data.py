@@ -47,7 +47,8 @@ class AkuvoxData:
                  token: str = None, # type: ignore
                  country_code: str = None, # type: ignore
                  phone_number: str = None, # type: ignore
-                 wait_for_image_url: bool = False):
+                 wait_for_image_url: bool = False,
+                 rtsp_ip: str = None):
         """Initialize the Akuvox API client."""
 
         self.hass = hass if hass else self.hass
