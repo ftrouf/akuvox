@@ -88,14 +88,6 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 token=login_data.get("token"),
             )
 
-            # 3) Récupère servers_list (ancienne méthode remplacée)
-            #    -> soit directement:
-            #await self.akuvox_api_client.async_get_servers_list()
-            LOGGER.debug("ETAPE3")            
-            await self.akuvox_api_client.async_init_api()
-            #    -> ou via: await self.akuvox_api_client.async_init_api()
-            #       (qui appelle async_get_servers_list + démarre le polling)
-
             # 4) Récupère les infos / devices
             LOGGER.debug("ETAPE4")            
             await self.akuvox_api_client.async_retrieve_user_data()
