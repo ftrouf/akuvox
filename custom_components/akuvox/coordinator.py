@@ -48,7 +48,6 @@ class AkuvoxDataUpdateCoordinator(DataUpdateCoordinator):
         """Update data via library."""
         try:
             LOGGER.debug("COORDINATOR")
-            await self.akuvox_api_client.async_login_password()
             if await self.client.async_retrieve_user_data():
                 data: dict = self.client.get_devices_json()
                 if data is not None:
