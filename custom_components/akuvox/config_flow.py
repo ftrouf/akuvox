@@ -76,11 +76,11 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
 
             # 2) Injecte le subdomain et token dans le modèle avant init
-            self.akuvox_api_client.init_api_with_data(
-                hass=self.hass,
-                subdomain=subdomain,
-                token=login_data.get("token"),
-            )
+            #self.akuvox_api_client.init_api_with_data(
+            #    hass=self.hass,
+            #    subdomain=subdomain,
+            #    token=login_data.get("token"),
+            #)
 
             # 3) Récupère servers_list (ancienne méthode remplacée)
             #    -> soit directement:
