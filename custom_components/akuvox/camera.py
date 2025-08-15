@@ -30,7 +30,7 @@ async def async_setup_entry(hass: HomeAssistant,
     for camera_data in cameras_data:
         name = str(camera_data["name"]).strip()
         rtsp_url = str(camera_data["video_url"]).strip()
-        LOGGER.error("RTSP URL for '%s': %s", name, rtsp_url)      
+        LOGGER.debug("RTSP URL for '%s': %s", name, rtsp_url)      
         entities.append(AkuvoxCameraEntity(
             hass=hass,
             name=name,
