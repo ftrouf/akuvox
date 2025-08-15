@@ -92,6 +92,8 @@ class AkuvoxData:
         """Parse the rest_server API response."""
         if json_data is not None and json_data != {}:
             self.host = json_data["rest_server_https"]
+            self.rtsp_ip = json_data["rtmp_server"].split(':')[0]
+            LOGGER.debug(" rtmp_server - %s", self.rtsp_ip)
             return True
         return self.host is None or len(self.host) == 0
 
