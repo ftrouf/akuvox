@@ -118,17 +118,6 @@ class AkuvoxApiClient:
         NB: on construit l'URL avec la query EN DUR (ne pas encoder '@').
         Retourne un dict: {'token','refresh_token','token_valid'} et remplit self._data.
         """
-        """Request server list data."""
-        self.init_api_with_data(
-            hass=hass,
-            subdomain=subdomain,
-            auth_token=auth_token,
-            token=token,
-            country_code=country_code,
-            phone_number=phone_number)
-        if await self.async_init_api() is False:
-            return False
-
         if not email or not password:
             raise AkuvoxApiClientAuthenticationError("Email/password manquants")
 
@@ -166,6 +155,13 @@ class AkuvoxApiClient:
         token = datas.get("token")
         refresh = datas.get("refresh_token")
 
+        """Request server list data."""
+        self.init_api_with_data(
+            hass=hass,
+            subdomain=subdomain,
+            token=token)
+        if await self.async_init_api() is False:
+            return False        
         # Si ton parseur existant traite la même structure, réutilise-le
         if hasattr(self._data, "parse_sms_login_response"):
             try:
