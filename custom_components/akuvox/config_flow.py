@@ -70,12 +70,14 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         try:
              # 1) Login email/mot de passe
+            LOGGER.debug("ETAPE1")
             login_data = await self.akuvox_api_client.async_login_password(email, password, subdomain)
             if not login_data or "token" not in login_data:
                 errors["base"] = "auth_failed"
                 return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
 
             # 2) Injecte le subdomain et token dans le modèle avant init
+            LOGGER.debug("ETAPE2")
             self.akuvox_api_client.init_api_with_data(
                 hass=self.hass,
                 subdomain=subdomain,
@@ -85,14 +87,16 @@ class AkuvoxFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             # 3) Récupère servers_list (ancienne méthode remplacée)
             #    -> soit directement:
             #await self.akuvox_api_client.async_get_servers_list()
+            LOGGER.debug("ETAPE3")            
             await self.akuvox_api_client.async_init_api()
             #    -> ou via: await self.akuvox_api_client.async_init_api()
             #       (qui appelle async_get_servers_list + démarre le polling)
 
             # 4) Récupère les infos / devices
+            LOGGER.debug("ETAPE4")            
             await self.akuvox_api_client.async_retrieve_user_data()
             devices_json = self.akuvox_api_client.get_devices_json() or {}
-
+            LOGGER.debug("ETAPE5")
             # 5) Enregistre les données dans la config entry
             self.data = {
                 "email": email,
