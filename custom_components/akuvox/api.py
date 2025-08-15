@@ -368,9 +368,11 @@ class AkuvoxApiClient:
     async def async_retrieve_personal_door_log(self) -> bool:
         """Request and parse the user's door log every 2 seconds."""
         while True:
+            LOGGER.warning("📡 async_retrieve_personal_door_log loop démarrée")
             json_data = await self.async_get_personal_door_log()
             if json_data is not None:
                 new_door_log = await self._data.async_parse_personal_door_log(json_data)
+                LOGGER.warning("📦 new_door_log = %s", new_door_log)
                 if new_door_log is not None:
                     LOGGER.debug(
                         "🚪 New door open event occurred. Firing akuvox_door_update event"
