@@ -97,7 +97,7 @@ class AkuvoxData:
 
     def parse_sms_login_response(self, json_data: dict):
         """Parse the sms_login API response."""
-        LOGGER.debug(" parse_sms_login')
+        LOGGER.debug("parse_sms_login")
         if json_data is not None:
             if "rtmp_server" in json_data:
                 self.rtsp_ip = json_data["rtmp_server"].split(':')[0]
