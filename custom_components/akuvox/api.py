@@ -212,13 +212,6 @@ class AkuvoxApiClient:
                 f"/servers_list non-JSON (CT={response.headers.get('content-type')}): {txt[:200]}"
             )
 
-        # Si ton parseur existant traite la même structure, réutilise-le
-        if hasattr(self._data, "parse_sms_login_response"):
-            try:
-                self._data.parse_sms_login_response(json_data)  # type: ignore[attr-defined]
-            except Exception:  # mieux vaut ne pas casser si les formats diffèrent
-                LOGGER.debug("servers_list: format différent, parseur SMS ignoré")
-
         return json_data
 
     async def async_init_api(self) -> bool:
